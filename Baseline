@@ -89,5 +89,26 @@ def set_move(x, y, player):
     """ 
     Figure out how to create a code that can pick the best move, or only sometimes pick the best move based on a difficulty set at the beginning by the player 
     """
+    
+    
+    """
+    An end of game message that will determine who has won 
+    
+    """
+     
+    if wins(board, HUMAN):
+      "need to add a way for the code to determine who has actually won
+        print('Congratulations, you win!')
+    elif wins(board, COMP):
+      
+        print('Sorry, you lost!')
+    else:
+        
+        print('It is a tie game!')
+
+    exit()
+
+
+
 
 
