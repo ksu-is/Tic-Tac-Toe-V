@@ -1,0 +1,93 @@
+from math import inf as infinity
+from random import choice
+import platform
+import time
+from os import system
+
+HUMAN = -1
+COMP = +1
+board = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+]
+
+
+def evaluate(state):
+
+    if wins(state, COMP):
+        score = +1
+    elif wins(state, HUMAN):
+        score = -1
+    else:
+        score = 0
+
+    return score
+
+
+def wins(state, player):
+    """
+  How the code determines if someone has won or not
+    """
+    win_state = [
+        [state[0][0], state[0][1], state[0][2]],
+        [state[1][0], state[1][1], state[1][2]],
+        [state[2][0], state[2][1], state[2][2]],
+        [state[0][0], state[1][0], state[2][0]],
+        [state[0][1], state[1][1], state[2][1]],
+        [state[0][2], state[1][2], state[2][2]],
+        [state[0][0], state[1][1], state[2][2]],
+        [state[2][0], state[1][1], state[0][2]],
+    ]
+    if [player, player, player] in win_state:
+        return True
+    else:
+        return False
+
+
+def game_over(state):
+  
+    
+   
+    return wins(state, HUMAN) or wins(state, COMP)
+
+
+def empty_cells(state):
+   
+    cells = []
+
+    for x, row in enumerate(state):
+        for y, cell in enumerate(row):
+            if cell == 0:
+                cells.append([x, y])
+
+    return cells
+
+
+def valid_move(x, y):
+    """
+    A move is only allowed if the space is currently empty
+   
+    """
+    if [x, y] in empty_cells(board):
+        return True
+    else:
+        return False
+
+
+def set_move(x, y, player):
+    """
+   if the move is allowed marks it on the board
+    """
+    if valid_move(x, y):
+        board[x][y] = player
+        return True
+    else:
+        return False
+
+
+    """ 
+    Figure out how to create a code that can pick the best move, or only sometimes pick the best move based on a difficulty set at the beginning by the player 
+    """
+
+
