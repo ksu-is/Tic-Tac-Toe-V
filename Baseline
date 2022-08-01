@@ -1,143 +1,64 @@
-from math import inf as infinity
-from random import choice
-import platform
-import time
-from os import system
-
-HUMAN = -1
-COMP = +1
-board = [
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
-]
+from tkinter import *
 
 
-def evaluate(state):
+def callback(r, c):
+    global player
 
-    if wins(state, COMP):
-        score = +1
-    elif wins(state, HUMAN):
-        score = -1
-    else:
-        score = 0
+validchoice = ["1","2","3","4","5","6","7","8","9"]
 
-    return score
+if player == 'X' and states[r][c] == 0 and stop_game == False:
+        b[r][c].configure(text='X', fg='blue', bg='white')
+        states[r][c] = 'X'
+        player = 'O'
 
-
-def wins(state, player):
-    """
-  How the code determines if someone has won or not
-    """
-    win_state = [
-        [state[0][0], state[0][1], state[0][2]],
-        [state[1][0], state[1][1], state[1][2]],
-        [state[2][0], state[2][1], state[2][2]],
-        [state[0][0], state[1][0], state[2][0]],
-        [state[0][1], state[1][1], state[2][1]],
-        [state[0][2], state[1][2], state[2][2]],
-        [state[0][0], state[1][1], state[2][2]],
-        [state[2][0], state[1][1], state[0][2]],
-    ]
-    if [player, player, player] in win_state:
-        return True
-    else:
-        return False
+    if player == 'O' and states[r][c] == 0 and stop_game == False:
+        b[r][c].configure(text='O', fg='orange', bg='white')
+        states[r][c] = 'O'
+        player = 'X'
+    check_for_winner()
 
 
-def game_over(state):
-  
+def check_for_winner():
+    global stop_game
+    for i in range(3):
+        if states[i][0] == states[i][1] == states[i][2] != 0:
+            b[i][0].config(bg='grey')
+            b[i][1].config(bg='grey')
+            b[i][2].config(bg='grey')
+            stop_game = True
+
+    for i in range(3):
+        if states[0][2] == states[1][1] == states[2][0] != 0:
+            b[0][2].config(bg='grey')
+            b[1][1].config(bg='grey')
+            b[2][0].config(bg='grey')
+            stop_game = True
+
+        if states[0][0] == states[1][1] == states[2][2] != 0:
+            b[0][0].config(bg='grey')
+            b[1][1].config(bg='grey')
+            b[2][2].config(bg='grey')
+            stop_game = True
+
+        if states[2][0] == states[1][1] == states[0][2] != 0:
+            b[2][0].config(bg='grey')
+            b[1][1].config(bg='grey')
+            b[0][2].config(bg='grey')
+            stop_game = True
+
+ game_on_first = gameon_choice2(playerone, "playerone")
+    game_on_second = gameon_choice2(playertwo, "playertwo")
     
-   
-    return wins(state, HUMAN) or wins(state, COMP)
+    if game_on_first is False or game_on_second is False:
+      game_on = gameon_choice()
+      if game_on:
+        clear_output()
+        count = 0
+        game_on_first = True
+        game_on_second = True
 
 
-def empty_cells(state):
-   
-    cells = []
-
-    for x, row in enumerate(state):
-        for y, cell in enumerate(row):
-            if cell == 0:
-                cells.append([x, y])
-
-    return cells
-
-
-def valid_move(x, y):
-    """
-    A move is only allowed if the space is currently empty
-   
-    """
-    if [x, y] in empty_cells(board):
-        return True
-    else:
-        return False
-
-
-def set_move(x, y, player):
-    """
-   if the move is allowed marks it on the board
-    """
-    if valid_move(x, y):
-        board[x][y] = player
-        return True
-    else:
-        return False
-
-
-    """ 
-    Figure out how to create a code that can pick the best move, or only sometimes pick the best move based on a difficulty set at the beginning by the player 
-    """
-    
-    """
-    Set up for how to check on what the best move is
-    """
-     if our_turn:
-        score = -2 
-        for move in game_state.get_possible_moves():
-            child = game_state.get_next_state(move, True)
-            temp_max, _ = alphabeta(child, alpha, beta, False)
-            if temp_max > score:
-                score = temp_max
-                best_move = move
-            alpha = max(alpha, score)
-            if beta <= alpha:
-                break
-        return score, best_move
-    else:
-        score = 2 
-        for move in game_state.get_possible_moves():
-            child = game_state.get_next_state(move, False)
-            temp_min, _ = alphabeta(child, alpha, beta, True)
-            if temp_min < score:
-                score = temp_min
-                best_move = move
-            beta = min(beta, score)
-            if beta <= alpha:
-                break
-        return score, best_move
-    
-    
-    
-    """
-    An end of game message that will determine who has won 
-    
-    """
-     
-    if wins(board, HUMAN):
-      "need to add a way for the code to determine who has actually won
-        print('Congratulations, you win!')
-    elif wins(board, COMP):
-      
-        print('Sorry, you lost!')
-    else:
-        
-        print('It is a tie game!')
-
-    exit()
-
-
+mainloop()
 
 
 
